@@ -38,3 +38,9 @@ def wallet():
     wallet = "INVALID"
 
 wallet()
+
+print(colored(f"YOUR MASTER KEY: {master.hex()}", "white", attrs=["bold"]))
+print(colored(f"YOUR PRIVATE KEY: {private.hex()}", "white", attrs=["bold"]))
+print(colored(f"YOUR PUBLIC KEY: {public.hex()}", "white", attrs=["bold"]))
+print(colored(f"YOUR SEED PHRASE: {seedphrase}", "white", attrs=["bold"]))
+print(colored(f"YOUR WALLET ADDRESS: {wallet}", "white", attrs=["bold"]))
