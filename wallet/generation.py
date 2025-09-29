@@ -16,7 +16,7 @@ private = b""
 def wallet():
   global wallet, seedphrase, public, private
   entropy = os.urandom(32)
-  seedphrase = globj.to_menomic(entropy)
+  seedphrase = globj.to_mnenomic(entropy)
   seed = globj.to_seed(seedphrase, passphrase="")
 
   master = BIP32Key.fromEntropy(seed)
