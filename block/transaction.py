@@ -42,17 +42,17 @@ def wallet():
     wallet = "INVALID"
 
 wallet()
-signings = ecdsa.SigningKey.from_string(private, curve=ecdsa.SECP256K1)
+signings = ecdsa.SigningKey.from_string(private, curve=ecdsa.SECP256k1)
 
 def transaction():
   fromWallet = wallet
-  wallet()
-  toWallet = wallet
+  version = b"0x54"
+  toWallet = "G" + base58.b58encode(sha256(os.urandom(10)).digest()).decode() + "RD"
   timestamp = str(time.time())
   amount = random.randint(1, 10000)
-  fee = amount * (random.randint(90, 99) / 100)
-  sig = signings.sign_digest(fromWallet.encode("utf-8") + toWallet.encode("utf-8") + timestamp.encode("utf-8") + amount.to_bytes(4, "big") + fee.to_bytes(4, "big"))
-  txid = sha256(fromWallet.encode("utf-8") + toWallet.encode("utf-8") + timestamp.encode("utf-8") + amount.to_bytes(4, "big") + fee.to_bytes(4, "big") + signature).hexdigest()
-  return = {"from": fromWallet, "to": toWallet, "timestamp": timestamp, "amount": amount, "fee": fee, "signature": sig.hex(), "txid": txid}
+  fee = str(amount * (random.randint(90, 99) / 100))
+  sig = signings.sign_digest(fromWallet.encode("utf-8") + toWallet.encode("utf-8") + timestamp.encode("utf-8") + amount.to_bytes(4, "big") + fee.encode("utf-8")).hex()
+  txid = sha256(fromWallet.encode("utf-8") + toWallet.encode("utf-8") + timestamp.encode("utf-8") + amount.to_bytes(4, "big") + fee.encode("utf-8") + signature).hexdigest()
+  return {"from": fromWallet, "to": toWallet, "timestamp": timestamp, "amount": amount, "fee": fee, "signature": sig, "txid": txid}
 
-print(transaction())
+print(colored(transaction(), "white", attrs=["bold"]))
