@@ -8,15 +8,16 @@ import os
 
 globj = Mnemonic("english")
 
+master = ""
 wallet = ""
 seedphrase = ""
 public = b""
 private = b""
 
 def wallet():
-  global wallet, seedphrase, public, private
+  global wallet, seedphrase, public, private, master
   entropy = os.urandom(32)
-  seedphrase = globj.to_mnenomic(entropy)
+  seedphrase = globj.to_mnemonic(entropy)
   seed = globj.to_seed(seedphrase, passphrase="")
 
   master = BIP32Key.fromEntropy(seed)
@@ -24,7 +25,7 @@ def wallet():
   public = master.PublicKey()
 
   version = b"0x54"
-  pubhash = RIPEMD.new(public)
+  pubhash = RIPEMD.new(public).digest()
   checksum = sha256(sha256(version + pubhash).digest()).digest()[:4]
   raw = base58.b58encode(version + pubhash + checksum).decode()
 
@@ -39,7 +40,7 @@ def wallet():
 
 wallet()
 
-print(colored(f"YOUR MASTER KEY: {master.hex()}", "white", attrs=["bold"]))
+print(colored(f"YOUR MASTER KEY: {master}", "white", attrs=["bold"]))
 print(colored(f"YOUR PRIVATE KEY: {private.hex()}", "white", attrs=["bold"]))
 print(colored(f"YOUR PUBLIC KEY: {public.hex()}", "white", attrs=["bold"]))
 print(colored(f"YOUR SEED PHRASE: {seedphrase}", "white", attrs=["bold"]))
