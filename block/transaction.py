@@ -32,7 +32,7 @@ def wallet():
   checksum = sha256(sha256(version + pubhash).digest()).digest()[:4]
   raw = base58.b58encode(version + pubhash + checksum).decode()
 
-  extract = base58.b58encode(raw)
+  extract = base58.b58decode(raw)
   ev = extract[0:1]
   eph = extract[1:21]
   ec = extract[21:25]
