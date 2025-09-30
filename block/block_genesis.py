@@ -71,6 +71,6 @@ def block():
           merklet.append(sha256(transactions[t] + transactions[t+1]).digest())
       transactionz = merklet
   merkleRoot = transactionz[0]
-  signature = signings.sign_digest(str(version).encode("utf-8") + timestamp.encode("utf-8") + str(height).encode("utf-8") + prevHash.encode("utf-8") + merkleRoot)
-  blockHash = sha256(sha256(str(version).encode("utf-8") + timestamp.encode("utf-8") + str(height).encode("utf-8") + prevHash.encode("utf-8") + merkleRoot + signature).digest()).hexdigest()
-  return {"version":
+  verifiedBy = int(public.hex(), 16)
+  blockHash = sha256(sha256(str(version).encode("utf-8") + strtimestamp.encode("utf-8") + str(height).encode("utf-8") + prevHash.encode("utf-8") + merkleRoot + signature).digest()).hexdigest()
+  return {"version": version, "height": height, "prevHash": prevHash, "timestamp": timestamp, "merkleRoot": merkleRoot.hex(), "verifiedBy": verifiedBy, "blockHash": blockHash}
