@@ -36,7 +36,7 @@ def wallet():
   ev = extract[0:1]
   eph = extract[1:21]
   ec = extract[21:25]
-  if sha256(sha256(ev + eph + ec).digest()).digest()[:4] == checksum:
+  if sha256(sha256(ev + eph).digest()).digest()[:4] == checksum:
     wallet = "G" + raw + "RD"
   else:
     wallet = "INVALID"
