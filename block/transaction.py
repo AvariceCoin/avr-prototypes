@@ -19,7 +19,7 @@ private = b""
 
 def wallet():
   global wallet, seedphrase, public, private, master
-  entropy = os.urandom(32)
+  entropy = os.urandom(16)
   seedphrase = globj.to_mnemonic(entropy)
   seed = globj.to_seed(seedphrase, passphrase="")
 
@@ -51,8 +51,8 @@ def transaction():
   timestamp = str(time.time())
   amount = random.randint(1, 10000)
   fee = str(amount * (random.randint(90, 99) / 100))
-  sig = signings.sign_digest(fromWallet.encode("utf-8") + toWallet.encode("utf-8") + timestamp.encode("utf-8") + amount.to_bytes(4, "big") + fee.encode("utf-8")).hex()
-  txid = sha256(fromWallet.encode("utf-8") + toWallet.encode("utf-8") + timestamp.encode("utf-8") + amount.to_bytes(4, "big") + fee.encode("utf-8") + signature).hexdigest()
-  return {"from": fromWallet, "to": toWallet, "timestamp": timestamp, "amount": amount, "fee": fee, "signature": sig, "txid": txid}
+  sig = signings.sign_digest(sha256(fromWallet.encode("utf-8") + toWallet.encode("utf-8") + timestamp.encode("utf-8") + amount.to_bytes(4, "big") + fee.encode("utf-8")).digest())
+  txid = sha256(fromWallet.encode("utf-8") + toWallet.encode("utf-8") + timestamp.encode("utf-8") + amount.to_bytes(4, "big") + fee.encode("utf-8") + sig).hexdigest()
+  return {"from": fromWallet, "to": toWallet, "timestamp": timestamp, "amount": amount, "fee": fee, "signature": sig.hex(), "txid": txid}
 
 print(colored(transaction(), "white", attrs=["bold"]))
