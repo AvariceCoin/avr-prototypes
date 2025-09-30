@@ -66,7 +66,7 @@ def block():
   while len(transactions) > 1:
       if len(transactions) % 2 == 1:
           transactions.append(transactions[-1])
-      merkle5 = []
+      merklet = []
       for t in range(0, len(transactions), 2):
           merklet.append(sha256(transactions[t] + transactions[t+1]).digest())
       transactionz = merklet
