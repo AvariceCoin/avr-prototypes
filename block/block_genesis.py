@@ -53,24 +53,26 @@ def transaction():
   fee = str(amount * (random.randint(90, 99) / 100))
   sig = signings.sign_digest(sha256(fromWallet.encode("utf-8") + toWallet.encode("utf-8") + timestamp.encode("utf-8") + amount.to_bytes(4, "big") + fee.encode("utf-8")).digest())
   txid = sha256(fromWallet.encode("utf-8") + toWallet.encode("utf-8") + timestamp.encode("utf-8") + amount.to_bytes(4, "big") + fee.encode("utf-8") + sig).digest()
-  weight = len(fromWallet) + len(str(amount)) + len(toWallet) + len(timestamp) + len(amount) + len(str(fee)) + len(sig) + len(txid.hex())
-  return {"from": fromWallet, "to": toWallet, "timestamp": timestamp, "amount": amount, "fee": fee, "signature": sig.hex(), "txid": txid.hex()}, txid, weight
+  weight = len(fromWallet) + len(str(amount)) + len(toWallet) + len(timestamp) + len(str(fee)) + len(sig.hex()) + len(txid.hex())
+  return txid, weight
 
 def block():
   version = 1
   timestamp = str(time.time())
   height = 1
   prevHash = "0"*64
-  strcap = round((1.5 * 1024**2) / transaction()[2])
-  transactions = [transaction()[1] for _ in range(strcap)]
+  strcap = round((1.5 * 1024**2) / transaction()[1])
+  transactions = [transaction()[0] for _ in range(10)]
   while len(transactions) > 1:
       if len(transactions) % 2 == 1:
           transactions.append(transactions[-1])
       merklet = []
       for t in range(0, len(transactions), 2):
           merklet.append(sha256(transactions[t] + transactions[t+1]).digest())
-      transactionz = merklet
-  merkleRoot = transactionz[0]
+      transactions = merklet
+  merkleRoot = transactions[0]
   verifiedBy = int(public.hex(), 16)
-  blockHash = sha256(sha256(str(version).encode("utf-8") + strtimestamp.encode("utf-8") + str(height).encode("utf-8") + prevHash.encode("utf-8") + merkleRoot + signature).digest()).hexdigest()
+  blockHash = sha256(sha256(str(version).encode("utf-8") + timestamp.encode("utf-8") + str(height).encode("utf-8") + prevHash.encode("utf-8") + merkleRoot + str(verifiedBy).encode("utf-8")).digest()).hexdigest()
   return {"version": version, "height": height, "prevHash": prevHash, "timestamp": timestamp, "merkleRoot": merkleRoot.hex(), "verifiedBy": verifiedBy, "blockHash": blockHash}
+
+print(colored(block(), "white", attrs=["bold"]))
