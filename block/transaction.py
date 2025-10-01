@@ -27,7 +27,7 @@ def wallet():
   private = master.PrivateKey()
   public = master.PublicKey()
 
-  version = b"0x54"
+  version = bytes([0x54])
   pubhash = RIPEMD.new(public).digest()
   checksum = sha256(sha256(version + pubhash).digest()).digest()[:4]
   raw = base58.b58encode(version + pubhash + checksum).decode()
@@ -46,7 +46,7 @@ signings = ecdsa.SigningKey.from_string(private, curve=ecdsa.SECP256k1)
 
 def transaction():
   fromWallet = wallet
-  version = b"0x54"
+  version = bytes([0x54])
   toWallet = "G" + base58.b58encode(sha256(os.urandom(10)).digest()).decode() + "RD"
   timestamp = str(time.time())
   amount = random.randint(1, 10000)
