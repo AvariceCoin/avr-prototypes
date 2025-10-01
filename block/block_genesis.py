@@ -71,7 +71,7 @@ def block():
           merklet.append(sha256(transactions[t] + transactions[t+1]).digest())
       transactions = merklet
   merkleRoot = transactions[0]
-  verifiedBy = int(public.hex(), 16)
+  verifiedBy = str(int(public.hex(), 16))
   blockHash = sha256(sha256(str(version).encode("utf-8") + timestamp.encode("utf-8") + str(height).encode("utf-8") + prevHash.encode("utf-8") + merkleRoot + str(verifiedBy).encode("utf-8")).digest()).hexdigest()
   return {"version": version, "height": height, "prevHash": prevHash, "timestamp": timestamp, "merkleRoot": merkleRoot.hex(), "verifiedBy": verifiedBy, "blockHash": blockHash}
 
